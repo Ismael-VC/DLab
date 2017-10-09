@@ -118,7 +118,9 @@ limitations under the License.
 .mat-input-placeholder {
   font-weight: 400;
 }
-
+/* .cdk-overlay-container {
+  position: inherit !important;
+} */
 
 
 [hidden], .hidden {

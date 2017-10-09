@@ -83,7 +83,7 @@ limitations under the License.
     </td>
     <td>
       <div class="dropdown">
-        <span data-toggle="dropdown" class="actions" (click)="dropdownPosition($event)" 
+        <!-- <span data-toggle="dropdown" class="actions" (click)="dropdownPosition($event)" 
               [ngClass]="{'disabled': env.status.toLowerCase() == 'creating' ||
                                       env.status.toLowerCase() == 'failed' ||
                                       env.status.toLowerCase() == 'terminating' ||
@@ -110,7 +110,36 @@ limitations under the License.
                 ">Add computational resources</li>
             <li (click)="exploratoryAction(env, 'install')">Manage libraries</li>
           </ul>
-        </div>
+        </div> -->
+
+        <span class="actions" [mdMenuTriggerFor]="menu"
+              [ngClass]="{'disabled': env.status.toLowerCase() == 'creating' ||
+              env.status.toLowerCase() == 'failed' ||
+              env.status.toLowerCase() == 'terminating' ||
+              env.status.toLowerCase() == 'terminated' ||
+              healthStatus === 'error'}"></span>
+
+        <md-menu #menu="mdMenu">
+          <a class="nav-item" md-menu-item (click)="exploratoryAction(env, 'stop')"
+              *ngIf="env.status.toLowerCase() !== 'stopped'
+              && env.status.toLowerCase() !== 'stopping'
+              && env.status.toLowerCase() !== 'starting'">Stop</a>
+
+          <a class="nav-item" md-menu-item (click)="exploratoryAction(env, 'run')"
+              *ngIf="env.status.toLowerCase() === 'stopped'">Run</a>
+
+          <a class="nav-item" md-menu-item (click)="exploratoryAction(env, 'terminate')"
+              *ngIf="env.status.toLowerCase() === 'running'
+              || env.status.toLowerCase() === 'stopped'">Terminate</a>
+          <a class="nav-item" md-menu-item (click)="exploratoryAction(env, 'deploy')"
+              *ngIf="env.status != 'stopping'
+              && env.status != 'stopped'
+              && env.status != 'starting'
+              && env.template_name.toLowerCase().indexOf('tensorflow') === -1
+              && env.template_name.toLowerCase().indexOf('deep learning') === -1">Add computational resources</a>
+          <a class="nav-item" md-menu-item (click)="exploratoryAction(env, 'install')">Manage libraries</a>
+          <!-- <a class="nav-item" md-menu-item >Reporting</a> -->
+        </md-menu>
       </div>
     </td>
   </tr>
