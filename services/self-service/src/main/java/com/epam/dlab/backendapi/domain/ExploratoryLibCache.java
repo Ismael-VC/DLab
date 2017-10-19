@@ -52,13 +52,17 @@ public class ExploratoryLibCache implements Managed, Runnable {
     /** Instance of cache.
      */
 	private static ExploratoryLibCache libCache;
-	
+
 	/** Thread of the cache. */
 	private Thread thread;
-	
+
 	/** List of libraries.
 	 */
 	private Map<String, ExploratoryLibList> cache = new HashMap<>();
+
+	public static void setCache(ExploratoryLibCache libCache) {
+		ExploratoryLibCache.libCache = libCache;
+	}
 
 	/** Return the list of libraries.
 	 */
@@ -76,7 +80,7 @@ public class ExploratoryLibCache implements Managed, Runnable {
 	@Override
 	public void start() throws Exception {
 		if (libCache == null) {
-			libCache = this;
+			setCache(this);
 		}
 	}
 
