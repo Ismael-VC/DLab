@@ -90,14 +90,21 @@ public class AdapterFile extends AdapterBase {
 	public void open() throws AdapterException {
 		try {
 			if (getMode() == Mode.READ) {
-				reader = new BufferedReader(new FileReader(file));
+				try (BufferedReader reader0 = new BufferedReader(new FileReader(file))) {
+					reader = reader0;
+				}
 			} else if (getMode() == Mode.WRITE) {
-				writer = new BufferedWriter(new FileWriter(file));
+				try (BufferedWriter writer0 = new BufferedWriter(new FileWriter(file))) {
+					writer = writer0;
+				}
 			} else {
 				throw new AdapterException("Mode of adapter unknown or not defined. Set mode to " + Mode.READ + " or " + Mode.WRITE + ".");
 			}
 		} catch (Exception e) {
 			throw new AdapterException("Cannot open file " + file + ". " + e.getLocalizedMessage(), e);
+		}
+		finally {
+			close();
 		}
 	}
 
@@ -112,7 +119,7 @@ public class AdapterFile extends AdapterBase {
 				reader = null;
 			}
 		}
-		
+
 		if (writer != null) {
 			try {
 				writer.close();
