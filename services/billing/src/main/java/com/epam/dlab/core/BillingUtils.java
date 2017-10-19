@@ -92,11 +92,14 @@ public class BillingUtils {
     	return classes;
 	}
 	
-	/** Check for child class is belong to parent by hierarchy.
+	/** Check if child class belongs to parent by hierarchy.
 	 * @param child the child class for check.
 	 * @param parent the parent class from hierarchy.
 	 */
 	public static boolean classChildOf(Class<?> child, Class<?> parent) {
+		if (!parent.isAssignableFrom(child)) {
+			return false;
+		}
 		while (child != null) {
 			if (parent.getName().equals(child.getName())) {
 				return true;
