@@ -51,6 +51,10 @@ public class EnvStatusListener implements Managed, Runnable {
 	/** Environment status listener. */
 	private static EnvStatusListener listener;
 
+	public static void setListener(EnvStatusListener listener) {
+		EnvStatusListener.listener = listener;
+	}
+
 	/**
 	 * Append the status checker for user to environment status listener.
 	 * @param userInfo authentication info of the current user
@@ -118,7 +122,7 @@ public class EnvStatusListener implements Managed, Runnable {
 	@Override
 	public void start() throws Exception {
 		if (listener == null) {
-			listener = this;
+			setListener(this);
 			checkStatusTimeoutMillis = configuration
 					.getCheckEnvStatusTimeout()
 					.toMilliseconds();
