@@ -41,11 +41,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 public class ProvisioningServiceApplication extends Application<ProvisioningServiceApplicationConfiguration> {
-    private static Injector injector;
-
-    public static Injector getInjector() {
-        return injector;
-    }
 
     public static void main(String[] args) throws Exception {
         if (ServiceUtils.printAppVersion(ProvisioningServiceApplication.class, args)) {
@@ -63,6 +58,8 @@ public class ProvisioningServiceApplication extends Application<ProvisioningServ
 
     @Override
     public void run(ProvisioningServiceApplicationConfiguration configuration, Environment environment) throws Exception {
+        Injector injector;
+
         DlabProcess.getInstance().setProcessTimeout(configuration.getProcessTimeout());
         DlabProcess.getInstance().setMaxProcessesPerBox(configuration.getProcessMaxThreadsPerJvm());
         DlabProcess.getInstance().setMaxProcessesPerUser(configuration.getProcessMaxThreadsPerUser());
@@ -85,6 +82,5 @@ public class ProvisioningServiceApplication extends Application<ProvisioningServ
         jersey.register(injector.getInstance(GitExploratoryResource.class));
         jersey.register(injector.getInstance(LibExploratoryResource.class));
         jersey.register(injector.getInstance(InfrastructureResource.class));
-
     }
 }
