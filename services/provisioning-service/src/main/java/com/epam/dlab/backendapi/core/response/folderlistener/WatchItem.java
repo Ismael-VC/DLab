@@ -88,7 +88,20 @@ public class WatchItem implements Comparable<WatchItem> {
 		return (fileHandlerCallback.checkUUID(o.fileHandlerCallback.getUUID()) ?
 					0 : fileHandlerCallback.getUUID().compareTo(o.fileHandlerCallback.getUUID()));
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof WatchItem)) return false;
+		WatchItem that = (WatchItem) o;
+		return fileHandlerCallback != null ? (compareTo(that) == 0) : that.fileHandlerCallback == null;
+	}
+
+	@Override
+	public int hashCode() {
+		return fileHandlerCallback != null && fileHandlerCallback.getUUID() != null ? fileHandlerCallback.getUUID().hashCode() : 0;
+	}
+
 	/** Returns the file handler for processing. */
 	public FileHandlerCallback getFileHandlerCallback() {
 		return fileHandlerCallback;
