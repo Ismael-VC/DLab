@@ -20,11 +20,13 @@ package com.epam.dlab.backendapi.roles;
 
 import java.util.Set;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.MoreObjects.ToStringHelper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /** Describe role.
  */
+@Data
+@AllArgsConstructor
 public class UserRole implements Comparable<UserRole> {
 
 	/** Type of role. */
@@ -38,60 +40,26 @@ public class UserRole implements Comparable<UserRole> {
 	
 	/** Name of DLab's users. */
 	private final Set<String> users;
-	
-	/** Instantiate the role.
-	 * @param type type of role.
-	 * @param name the name of role.
-	 * @param groups the names of external groups.
-	 * @param users the name of DLab's users.
-	 */
-	public UserRole(RoleType type, String name, Set<String> groups, Set<String> users) {
-		this.type = type;
-		this.name = name;
-		this.groups = groups;
-		this.users = users;
-	}
-	
-	/** Return the type of role.
-	 */
-	public RoleType getType() {
-		return type;
-	}
 
-	/** Return the name of role.
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	/** Return the names of external groups.
-	 */
-	public Set<String> getGroups() {
-		return groups;
-	}
-
-	/** Return the name of DLab's users.
-	 */
-	public Set<String> getUsers() {
-		return users;
-	}
-	
 	@Override
 	public int compareTo(UserRole o) {
 		int result = type.compareTo(o.type);
 		return (result == 0 ? name.compareTo(o.name) : result);
 	}
-	
-    public ToStringHelper toStringHelper(Object self) {
-    	return MoreObjects.toStringHelper(self)
-    	        .add("type", type)
-    	        .add("name", name)
-    	        .add("groups", groups)
-    	        .add("users", users);
-    }
-    
-    @Override
-    public String toString() {
-    	return toStringHelper(this).toString();
-    }
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof UserRole)) return false;
+		UserRole that = (UserRole) o;
+		return compareTo(that) == 0;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (type != null ? type.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		return result;
+	}
 }
