@@ -18,13 +18,14 @@ limitations under the License.
 
 package com.epam.dlab.mongo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.base.MoreObjects.ToStringHelper;
 
 /** The resource of DLab environment.
  */
+@Data
+@AllArgsConstructor
 public class ResourceItem implements Comparable<ResourceItem> {
 	
 	/** Resource ID. */
@@ -41,21 +42,6 @@ public class ResourceItem implements Comparable<ResourceItem> {
 	
 	/** Name of exploratory.*/
 	String exploratoryName;
-	
-	/** Instantiate resource of DLab environment.
-	 * @param resourceId resource id.
-	 * @param type the type of resource.
-	 * @param user the name of user.
-	 * @param exploratoryName the name of exploratory.
-	 */
-	public ResourceItem(String resourceId, String resourceName, DlabResourceType type,
-			String user, String exploratoryName) {
-		this.resourceId = resourceId;
-		this.resourceName = resourceName;
-		this.type = type;
-		this.user = user;
-		this.exploratoryName = exploratoryName;
-	}
 
 	@Override
 	public int compareTo(ResourceItem o) {
@@ -75,48 +61,21 @@ public class ResourceItem implements Comparable<ResourceItem> {
 		return result;
 	}
 
-
-	/** Returns the resource id. */
-	public String getResourceId() {
-		return resourceId;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ResourceItem)) return false;
+		ResourceItem that = (ResourceItem) o;
+		return compareTo(that) == 0;
 	}
-
-	/** Return user friendly name of resource.*/
-	public String getResourceName() {
-		return resourceName;
-	}
-	
-	/** Returns the type of resource. */
-	public DlabResourceType getType() {
-		return type;
-	}
-	
-	/** Returns the name of user. */
-	public String getUser() {
-		return user;
-	}
-
-	/** Returns the name of exploratory. */
-	public String getExploratoryName() {
-		return exploratoryName;
-	}
-
-
-	
-	/** Returns a string representation of the object.
-	 * @param self the object to generate the string for (typically this), used only for its class name.
-	 */
-	public ToStringHelper toStringHelper(Object self) {
-    	return MoreObjects.toStringHelper(self)
-    			.add("resourceId",  resourceId)
-    			.add("resourceName", resourceName)
-    			.add("type",  type)
-    			.add("user",  user)
-    			.add("exploratoryName", exploratoryName);
-    }
 
 	@Override
-	public String toString() {
-		return toStringHelper(this).toString();
+	public int hashCode() {
+		int result = resourceId != null ? resourceId.hashCode() : 0;
+		result = 31 * result + (type != null ? type.hashCode() : 0);
+		result = 31 * result + (user != null ? user.hashCode() : 0);
+		result = 31 * result + (exploratoryName != null ? exploratoryName.hashCode() : 0);
+		return result;
 	}
+
 }
