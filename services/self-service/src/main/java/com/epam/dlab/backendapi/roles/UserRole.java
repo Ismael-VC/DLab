@@ -22,10 +22,12 @@ import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /** Describe role.
  */
 @Data
+@EqualsAndHashCode(exclude = {"groups", "users"})
 @AllArgsConstructor
 public class UserRole implements Comparable<UserRole> {
 
@@ -45,21 +47,5 @@ public class UserRole implements Comparable<UserRole> {
 	public int compareTo(UserRole o) {
 		int result = type.compareTo(o.type);
 		return (result == 0 ? name.compareTo(o.name) : result);
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof UserRole)) return false;
-		UserRole that = (UserRole) o;
-		return compareTo(that) == 0;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 31 * result + (type != null ? type.hashCode() : 0);
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		return result;
 	}
 }
