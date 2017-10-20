@@ -48,10 +48,6 @@ public class SelfServiceApplication extends Application<SelfServiceApplicationCo
         return injector;
     }
 
-    public static void setInjector(Injector injector) {
-        SelfServiceApplication.injector = injector;
-    }
-
     public static void main(String... args) throws Exception {
         if (ServiceUtils.printAppVersion(SelfServiceApplication.class, args)) {
             return;
@@ -72,7 +68,7 @@ public class SelfServiceApplication extends Application<SelfServiceApplicationCo
     public void run(SelfServiceApplicationConfiguration configuration, Environment environment) throws Exception {
 
         CloudModule cloudModule = ModuleFactory.getCloudProviderModule(configuration);
-        setInjector(Guice.createInjector(ModuleFactory.getModule(configuration, environment), cloudModule));
+        injector = Guice.createInjector(ModuleFactory.getModule(configuration, environment), cloudModule);
         cloudModule.init(environment, injector);
         environment.lifecycle().manage(injector.getInstance(IndexCreator.class));
         environment.lifecycle().manage(injector.getInstance(EnvStatusListener.class));
