@@ -20,12 +20,14 @@ package com.epam.dlab.mongo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
 /** The resource of DLab environment.
  */
 @Data
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"resourceName"})
 public class ResourceItem implements Comparable<ResourceItem> {
 	
 	/** Resource ID. */
@@ -58,23 +60,6 @@ public class ResourceItem implements Comparable<ResourceItem> {
 				}
 			}
 		}
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ResourceItem)) return false;
-		ResourceItem that = (ResourceItem) o;
-		return compareTo(that) == 0;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = resourceId != null ? resourceId.hashCode() : 0;
-		result = 31 * result + (type != null ? type.hashCode() : 0);
-		result = 31 * result + (user != null ? user.hashCode() : 0);
-		result = 31 * result + (exploratoryName != null ? exploratoryName.hashCode() : 0);
 		return result;
 	}
 
