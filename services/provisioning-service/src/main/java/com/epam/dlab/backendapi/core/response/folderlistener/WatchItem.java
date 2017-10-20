@@ -23,10 +23,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import com.epam.dlab.backendapi.core.FileHandlerCallback;
-import com.google.common.base.MoreObjects;
+import lombok.Data;
 
 /** Class to store the file handler for processing.
  */
+@Data
 public class WatchItem implements Comparable<WatchItem> {
 	
 	/** Status of file processing.
@@ -89,57 +90,11 @@ public class WatchItem implements Comparable<WatchItem> {
 					0 : fileHandlerCallback.getUUID().compareTo(o.fileHandlerCallback.getUUID()));
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof WatchItem)) return false;
-		WatchItem that = (WatchItem) o;
-		return fileHandlerCallback != null ? (compareTo(that) == 0) : that.fileHandlerCallback == null;
-	}
-
-	@Override
-	public int hashCode() {
-		return fileHandlerCallback != null && fileHandlerCallback.getUUID() != null ? fileHandlerCallback.getUUID().hashCode() : 0;
-	}
-
-	/** Returns the file handler for processing. */
-	public FileHandlerCallback getFileHandlerCallback() {
-		return fileHandlerCallback;
-	}
-	
-	/** Returns the timeout waiting for the file creation in milliseconds. */
-	public long getTimeoutMillis() {
-		return timeoutMillis;
-	}
-
-	/** Returns the timeout waiting for the file writing in milliseconds. */
-	public long getFileLengthCheckDelay() {
-		return fileLengthCheckDelay;
-	}
-
-
-	/** Returns the time when expired for the file creation in milliseconds. */
-	public long getExpiredTimeMillis() {
-		return expiredTimeMillis;
-	}
-	
-	/** Sets time when expired for file creation in milliseconds.
-	 * @param expiredTimeMillis time expired for file creation in milliseconds. */
-	private void setExpiredTimeMillis(long expiredTimeMillis) {
-		this.expiredTimeMillis = System.currentTimeMillis() + expiredTimeMillis;
-	}
-
-	/** Returns the file name. */
-	public String getFileName() {
-		return fileName;
-	}
-
-	/** Sets the file name.
-	 * @param fileName file name.
-	 */
-	protected void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    /** Sets time when expired for file creation in milliseconds.
+     * @param expiredTimeMillis time expired for file creation in milliseconds. */
+    private void setExpiredTimeMillis(long expiredTimeMillis) {
+        this.expiredTimeMillis = System.currentTimeMillis() + expiredTimeMillis;
+    }
 
 	/** Returns the status of the file processing.
 	 *  See {@link ItemStatus} for details. */
@@ -171,19 +126,6 @@ public class WatchItem implements Comparable<WatchItem> {
 		return (fileName == null && expiredTimeMillis < System.currentTimeMillis());
 	}
 
-
-	/** Returns the future for asynchronously the file processing. */
-	public CompletableFuture<Boolean> getFuture() {
-		return future;
-	}
-	
-	/** Sets the future for the file processing.
-	 * @param future completable future for file processing. 
-	 */
-	protected void setFuture(CompletableFuture<Boolean> future) {
-		this.future = future;
-	}
-	
 	/** Returns the result of the file processing. This method is non-blocking and returns <b>true</b>
 	 * or <b>false</b> if the file processing has done, otherwise returns <b>null</b>. */
 	public Boolean getFutureResult() {
@@ -203,17 +145,5 @@ public class WatchItem implements Comparable<WatchItem> {
 		}
 		return futureResult;
 	}
-	
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.add("fileHandlerCallback", fileHandlerCallback)
-				.add("timeoutMillis", timeoutMillis)
-				.add("fileLengthCheckDelay", fileLengthCheckDelay)
-				.add("expiredTimeMillis", expiredTimeMillis)
-				.add("fileName", fileName)
-				.add("future", future)
-				.add("futureResult", futureResult)
-				.toString();
-	}
+
 }
