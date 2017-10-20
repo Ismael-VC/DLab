@@ -97,16 +97,7 @@ public class BillingUtils {
 	 * @param parent the parent class from hierarchy.
 	 */
 	public static boolean classChildOf(Class<?> child, Class<?> parent) {
-		if (!parent.isAssignableFrom(child)) {
-			return false;
-		}
-		while (child != null) {
-			if (parent.getName().equals(child.getName())) {
-				return true;
-			}
-			child = child.getSuperclass();
-		}
-		return false;
+		return parent.isAssignableFrom(child);
 	}
 
 	/** Return the type of module if class is module otherwise <b>null</b>.
